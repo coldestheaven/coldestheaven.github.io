@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>打砖块 · Game Dev Base</title>
+  <meta name="description" content="在浏览器里玩打砖块：移动挡板接住小球，敲碎全部砖块。" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23f97316'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='32' text-anchor='middle' fill='white'%3E🧱%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="bgFractal" aria-hidden="true"></canvas>
+  <div id="progress" aria-hidden="true"></div>
+
+  <header>
+    <div class="wrap">
+      <nav aria-label="主导航">
+        <a href="index.html" class="brand">Game<span> Dev Base</span></a>
+        <button class="menu-btn" id="menuBtn" aria-label="展开菜单" aria-expanded="false">☰</button>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html">首页</a>
+          <a href="bomber.html">炸弹人</a>
+          <a href="snake.html">贪吃蛇</a>
+          <a href="breakout.html">打砖块</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section id="breakout">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Play</span>
+          <h2>打砖块</h2>
+          <p class="section-sub">移动挡板接住小球，敲碎全部砖块，闯过一关又一关。</p>
+        </div>
+        <div class="game-shell reveal" id="breakoutShell">
+          <button type="button" class="game-quit" aria-label="退出全屏">✕</button>
+          <div class="game-hud">
+            <span>得分 <b id="breakoutScore">0</b></span>
+            <span>生命 <b id="breakoutLives">3</b></span>
+            <span>关卡 <b id="breakoutLevel">1</b></span>
+            <button type="button" class="game-fs-btn">⛶ 全屏游玩</button>
+          </div>
+          <div class="game-stage">
+            <canvas id="breakoutCanvas" width="480" height="400" tabindex="0" aria-label="打砖块游戏画面"></canvas>
+            <div class="game-overlay show" id="breakoutOverlay">
+              <strong id="breakoutOverlayTitle">打砖块</strong>
+              <span id="breakoutOverlayText">鼠标 / 手指拖动挡板，方向键也能移动；点击画面发球，空格键也可发球。</span>
+              <button class="btn btn-primary" id="breakoutOverlayBtn">开始游戏</button>
+            </div>
+          </div>
+          <div class="game-touch">
+            <div class="dpad">
+              <button type="button" data-dir="left" aria-label="左">◀</button>
+              <button type="button" data-dir="right" aria-label="右">▶</button>
+            </div>
+            <span class="game-help" style="margin:0">在画面上拖动也能移动挡板</span>
+          </div>
+          <p class="game-help">鼠标 / 触屏拖动挡板 · ← → 或 A D 移动 · 空格 / 点击画面发球</p>
+          <a class="game-back" href="index.html">← 返回游戏列表</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="year"></span> Game Dev Base · Made with ❤️ and a lot of coffee.
+    </div>
+  </footer>
+
+  <button id="toTop" aria-label="回到顶部">↑</button>
+  <script src="common.js" defer></script>
+  <script src="breakout.js" defer></script>
+</body>
+</html>

@@ -1,26 +1,30 @@
 # coldestheaven.github.io
 
-「游戏开发基地」的 GitHub Pages 页面，现在是一个**炸弹人小游戏**页面：全屏可玩、手机也能玩，背景是分形图案。纯静态单文件，无需构建，推送到本仓库即可通过 `https://coldestheaven.github.io` 访问。
+「游戏开发基地」的 GitHub Pages 页面：一个**浏览器小游戏站**，首页是游戏列表，每款游戏独占一个页面。纯静态、无构建、无外部依赖，推送到本仓库即可通过 `https://coldestheaven.github.io` 访问。
 
-## 页面内容
+## 页面结构
 
-- `#game`：炸弹人游戏区（页面第一屏），支持全屏模式
-- 首屏：简短标题、打字机效果、全屏开玩按钮与主站入口
-- `#bgFractal`：全站固定的分形底板（低分辨率、低透明度，上盖暗色遮罩）
-- 导航只保留「首页」「游戏」；原来的站点介绍、主题、功能、分形、反馈区块已移除，相关内容请访问 [kuangyi.art](https://kuangyi.art/)
+| 文件 | 说明 |
+| --- | --- |
+| `index.html` | 游戏列表首页，列出三款游戏并链接到各自页面 |
+| `bomber.html` + `bomber.js` | 炸弹人：放炸弹、炸砖块、躲爆炸、消灭敌人，道具与关卡递增 |
+| `snake.html` + `snake.js` | 贪吃蛇：吃食物变长、逐渐加速，最高分存本地 |
+| `breakout.html` + `breakout.js` | 打砖块：挡板接球、逐关清理砖块 |
+| `style.css` | 全站样式（主题变量、游戏外壳、全屏模式、响应式） |
+| `common.js` | 通用脚本：背景分形、导航、菜单、滚动进度、全屏管理 |
+
+每款游戏都支持电脑键盘与手机触屏，右上角「⛶ 全屏游玩」进入全屏（iOS 用 CSS 铺满，其他浏览器再叠加原生全屏），✕ 或 Esc 退出。背景是低透明度的曼德勃罗分形。
 
 ## 自定义指南
 
-所有内容都在 [`index.html`](index.html) 一个文件里，直接用文本编辑器打开修改即可：
+1. **主题颜色**：修改 `style.css` 中 `:root` 变量（`--accent`、`--accent-2` 等）。
+2. **站点名称**：搜索 `Game Dev Base`、`GDB`，替换站点名与缩写。
+3. **游戏规则**：分别修改 `bomber.js` / `snake.js` / `breakout.js` 里的对应 IIFE（绘制与逻辑都在其中）。
+4. **分形底板**：`common.js` 中「全页分形底板」IIFE，调整迭代次数、坐标范围与 `stops` 配色即可。
+5. **增加游戏**：复制任一 `*.html` 页面、编写独立 JS，再在 `index.html` 的游戏列表和四个页面的导航中加一项。
+6. **标题与描述**：修改各页面 `<head>` 里的 `<title>` 与 `<meta name="description">`。
 
-1. **主题颜色**：修改 `<style>` 开头的 `:root` 变量（`--accent`、`--accent-2`、`--gradient` 等）。
-2. **标题文字**：搜索 `游戏开发基地`、`Game Dev Base`、`GDB`，替换站点名与缩写。
-3. **打字机文字**：在脚本中修改 `words` 数组。
-4. **游戏规则**：`#game` 区块是纯 Canvas 实现的小游戏，逻辑与绘制都在脚本底部的独立 IIFE 中 —— 敌人数量随关卡递增，炸砖块有几率掉落 F 火力 / B 炸弹 / S 加速道具。
-5. **全屏**：首屏「全屏开玩 🎮」、HUD「⛶ 全屏游玩」和「开始游戏」都会进入全屏；CSS 铺满视口（iOS 也生效），支持的浏览器再叠加原生 Fullscreen API；右上角 ✕ 或 Esc 退出。
-6. **分形底板**：脚本中「全站分形底板」IIFE 独立于交互分形区块，调整迭代次数 `iter`、中心 `cx`、范围 `span` 和 `stops` 配色即可。
-7. **链接**：主站 `https://kuangyi.art/`、GitHub `https://github.com/coldestheaven`。
-8. **网站标题与描述**：修改 `<head>` 里的 `<title>`、`<meta name="description">` 和 og 标签。
+原个人站点内容请访问 [kuangyi.art](https://kuangyi.art/)。
 
 ## 本地预览
 

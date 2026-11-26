@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>贪吃蛇 · Game Dev Base</title>
+  <meta name="description" content="在浏览器里玩贪吃蛇：吃食物变长，别撞到墙和自己。" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%237c5cff'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='32' text-anchor='middle' fill='white'%3E🐍%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="bgFractal" aria-hidden="true"></canvas>
+  <div id="progress" aria-hidden="true"></div>
+
+  <header>
+    <div class="wrap">
+      <nav aria-label="主导航">
+        <a href="index.html" class="brand">Game<span> Dev Base</span></a>
+        <button class="menu-btn" id="menuBtn" aria-label="展开菜单" aria-expanded="false">☰</button>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html">首页</a>
+          <a href="bomber.html">炸弹人</a>
+          <a href="snake.html">贪吃蛇</a>
+          <a href="breakout.html">打砖块</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section id="snake">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Play</span>
+          <h2>贪吃蛇</h2>
+          <p class="section-sub">吃食物变长，别撞到墙和自己。速度会越来越快。</p>
+        </div>
+        <div class="game-shell reveal" id="snakeShell">
+          <button type="button" class="game-quit" aria-label="退出全屏">✕</button>
+          <div class="game-hud">
+            <span>得分 <b id="snakeScore">0</b></span>
+            <span>长度 <b id="snakeLength">3</b></span>
+            <span>最佳 <b id="snakeBest">0</b></span>
+            <button type="button" class="game-fs-btn">⛶ 全屏游玩</button>
+          </div>
+          <div class="game-stage">
+            <canvas id="snakeCanvas" width="480" height="480" tabindex="0" aria-label="贪吃蛇游戏画面"></canvas>
+            <div class="game-overlay show" id="snakeOverlay">
+              <strong id="snakeOverlayTitle">贪吃蛇</strong>
+              <span id="snakeOverlayText">WASD / 方向键移动，空格暂停；手机上用下方方向键，也可以直接在画面上滑动。</span>
+              <button class="btn btn-primary" id="snakeOverlayBtn">开始游戏</button>
+            </div>
+          </div>
+          <div class="game-touch">
+            <div class="dpad">
+              <button type="button" data-dir="up" aria-label="上">▲</button>
+              <div class="dpad-row">
+                <button type="button" data-dir="left" aria-label="左">◀</button>
+                <button type="button" data-dir="down" aria-label="下">▼</button>
+                <button type="button" data-dir="right" aria-label="右">▶</button>
+              </div>
+            </div>
+            <span class="game-help" style="margin:0">在画面上滑动也能转向</span>
+          </div>
+          <p class="game-help">WASD / 方向键移动 · 空格暂停 · 手机可滑动或点方向键</p>
+          <a class="game-back" href="index.html">← 返回游戏列表</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="year"></span> Game Dev Base · Made with ❤️ and a lot of coffee.
+    </div>
+  </footer>
+
+  <button id="toTop" aria-label="回到顶部">↑</button>
+  <script src="common.js" defer></script>
+  <script src="snake.js" defer></script>
+</body>
+</html>
