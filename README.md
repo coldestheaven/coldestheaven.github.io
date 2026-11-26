@@ -1,6 +1,13 @@
 # coldestheaven.github.io
 
-「游戏开发基地」的 GitHub Pages 站点页面，内容与主站 [kuangyi.art](https://kuangyi.art/) 一致：只介绍站点、笔记与功能，不做个人介绍。纯静态单文件，无需构建，推送到本仓库即可通过 `https://coldestheaven.github.io` 访问。
+「游戏开发基地」的 GitHub Pages 页面，现在是一个**炸弹人小游戏**页面：全屏可玩、手机也能玩，背景是分形图案。纯静态单文件，无需构建，推送到本仓库即可通过 `https://coldestheaven.github.io` 访问。
+
+## 页面内容
+
+- `#game`：炸弹人游戏区（页面第一屏），支持全屏模式
+- 首屏：简短标题、打字机效果、全屏开玩按钮与主站入口
+- `#bgFractal`：全站固定的分形底板（低分辨率、低透明度，上盖暗色遮罩）
+- 导航只保留「首页」「游戏」；原来的站点介绍、主题、功能、分形、反馈区块已移除，相关内容请访问 [kuangyi.art](https://kuangyi.art/)
 
 ## 自定义指南
 
@@ -8,11 +15,11 @@
 
 1. **主题颜色**：修改 `<style>` 开头的 `:root` 变量（`--accent`、`--accent-2`、`--gradient` 等）。
 2. **标题文字**：搜索 `游戏开发基地`、`Game Dev Base`、`GDB`，替换站点名与缩写。
-3. **打字机文字**：在脚本中修改 `words` 数组（当前是 `Unreal 笔记`、`Unity 笔记` 等）。
-4. **栏目内容**：`index.html` 里的 `<section>` 分别对应炸弹人小游戏、站点介绍、内容主题、站点功能、分形画布与意见反馈，直接改文字即可。
-5. **链接**：主站 `https://kuangyi.art/`、笔记 `https://kuangyi.art/notes/#/`、看板 `https://kuangyi.art/stats/`、GitHub `https://github.com/coldestheaven`。
-6. **分形**：`#fractal` 区块是可交互的曼德勃罗集；`#bgFractal` 是全站固定的分形底板（低分辨率、低透明度，上面盖暗色遮罩）。两者共用脚本底部的 `home`、`maxIter`、`palettes` 参数；导航「分形」和首屏「探索分形 ↓」都可跳转到交互区块。
-7. **炸弹人**：`#game` 区块是纯 Canvas 实现的小游戏（WASD / 方向键移动、空格放炸弹，手机有屏幕方向键），逻辑与绘制都在 `index.html` 底部的独立 IIFE 中；敌人数量随关卡递增，炸砖块有几率掉落 F 火力 / B 炸弹 / S 加速道具。首屏「玩炸弹人 🎮」、HUD 里的「⛶ 全屏游玩」和游戏内「开始游戏」都会进入全屏模式：CSS 铺满视口（iOS 也生效），支持的浏览器再叠加原生 Fullscreen API，右上角 ✕ 或 Esc 退出；竖屏下画布与触控按键会自动缩放适配。
+3. **打字机文字**：在脚本中修改 `words` 数组。
+4. **游戏规则**：`#game` 区块是纯 Canvas 实现的小游戏，逻辑与绘制都在脚本底部的独立 IIFE 中 —— 敌人数量随关卡递增，炸砖块有几率掉落 F 火力 / B 炸弹 / S 加速道具。
+5. **全屏**：首屏「全屏开玩 🎮」、HUD「⛶ 全屏游玩」和「开始游戏」都会进入全屏；CSS 铺满视口（iOS 也生效），支持的浏览器再叠加原生 Fullscreen API；右上角 ✕ 或 Esc 退出。
+6. **分形底板**：脚本中「全站分形底板」IIFE 独立于交互分形区块，调整迭代次数 `iter`、中心 `cx`、范围 `span` 和 `stops` 配色即可。
+7. **链接**：主站 `https://kuangyi.art/`、GitHub `https://github.com/coldestheaven`。
 8. **网站标题与描述**：修改 `<head>` 里的 `<title>`、`<meta name="description">` 和 og 标签。
 
 ## 本地预览
