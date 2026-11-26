@@ -12,7 +12,7 @@
 4. **栏目内容**：`index.html` 里的 `<section>` 分别对应炸弹人小游戏、站点介绍、内容主题、站点功能、分形画布与意见反馈，直接改文字即可。
 5. **链接**：主站 `https://kuangyi.art/`、笔记 `https://kuangyi.art/notes/#/`、看板 `https://kuangyi.art/stats/`、GitHub `https://github.com/coldestheaven`。
 6. **分形**：`#fractal` 区块是可交互的曼德勃罗集；`#bgFractal` 是全站固定的分形底板（低分辨率、低透明度，上面盖暗色遮罩）。两者共用脚本底部的 `home`、`maxIter`、`palettes` 参数；导航「分形」和首屏「探索分形 ↓」都可跳转到交互区块。
-7. **炸弹人**：`#game` 区块是纯 Canvas 实现的小游戏（WASD / 方向键移动、空格放炸弹，手机有屏幕方向键），逻辑与绘制都在 `index.html` 底部的独立 IIFE 中；敌人数量随关卡递增，炸砖块有几率掉落 F 火力 / B 炸弹 / S 加速道具。
+7. **炸弹人**：`#game` 区块是纯 Canvas 实现的小游戏（WASD / 方向键移动、空格放炸弹，手机有屏幕方向键），逻辑与绘制都在 `index.html` 底部的独立 IIFE 中；敌人数量随关卡递增，炸砖块有几率掉落 F 火力 / B 炸弹 / S 加速道具。首屏「玩炸弹人 🎮」、HUD 里的「⛶ 全屏游玩」和游戏内「开始游戏」都会进入全屏模式：CSS 铺满视口（iOS 也生效），支持的浏览器再叠加原生 Fullscreen API，右上角 ✕ 或 Esc 退出；竖屏下画布与触控按键会自动缩放适配。
 8. **网站标题与描述**：修改 `<head>` 里的 `<title>`、`<meta name="description">` 和 og 标签。
 
 ## 本地预览
