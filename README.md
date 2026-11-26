@@ -8,8 +8,8 @@
 | --- | --- |
 | `index.html` | 游戏列表首页，列出三款游戏并链接到各自页面 |
 | `bomber.html` + `bomber.js` | 炸弹人：放炸弹、炸砖块、躲爆炸、消灭敌人，道具与关卡递增 |
-| `snake.html` + `snake.js` | 贪吃蛇：吃食物变长、逐渐加速，最高分存本地 |
-| `breakout.html` + `breakout.js` | 打砖块：挡板接球、逐关清理砖块 |
+| `tank.html` + `tank.js` | 坦克大战：消灭敌军、炸开砖墙、守住基地，逐关递增 |
+| `sim.html` + `sim.js` | 模拟经营：点击顾客结账、提价/装修/雇助手升级、每天结算房租 |
 | `style.css` | 全站样式（主题变量、游戏外壳、全屏模式、响应式） |
 | `common.js` | 通用脚本：背景分形、导航、菜单、滚动进度、全屏管理 |
 
@@ -19,7 +19,7 @@
 
 1. **主题颜色**：修改 `style.css` 中 `:root` 变量（`--accent`、`--accent-2` 等）。
 2. **站点名称**：搜索 `Game Dev Base`、`GDB`，替换站点名与缩写。
-3. **游戏规则**：分别修改 `bomber.js` / `snake.js` / `breakout.js` 里的对应 IIFE（绘制与逻辑都在其中）。
+3. **游戏规则**：分别修改 `bomber.js` / `tank.js` / `sim.js` 里的对应 IIFE（绘制与逻辑都在其中）。
 4. **分形底板**：`common.js` 中「全页分形底板」IIFE，调整迭代次数、坐标范围与 `stops` 配色即可。
 5. **增加游戏**：复制任一 `*.html` 页面、编写独立 JS，再在 `index.html` 的游戏列表和四个页面的导航中加一项。
 6. **标题与描述**：修改各页面 `<head>` 里的 `<title>` 与 `<meta name="description">`。

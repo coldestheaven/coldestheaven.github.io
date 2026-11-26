@@ -128,7 +128,7 @@
       color: var(--text); font-size: 1.2rem; line-height: 1;
     }
     .game-stage { position: relative; line-height: 0; }
-    #gameCanvas {
+    .game-stage canvas {
       width: 100%; height: auto; display: block; border-radius: 12px;
       background: #0b1020; touch-action: none; image-rendering: pixelated;
     }
@@ -156,6 +156,14 @@
     .dpad-row { grid-column: 1 / -1; display: flex; gap: 4px; justify-content: center; }
     .bomb-btn { padding: 0 18px; font-size: 0.9rem; }
     .game-help { text-align: center; color: var(--muted); font-size: 0.82rem; margin-top: 14px; }
+    .sim-upgrades { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
+    .sim-upgrades button {
+      padding: 9px 13px; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--surface); color: var(--text); font-size: 0.82rem; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .sim-upgrades button:hover:not(:disabled) { border-color: var(--accent); background: var(--surface-hover); }
+    .sim-upgrades button:disabled { opacity: 0.45; cursor: not-allowed; }
     @media (pointer: coarse), (max-width: 640px) { .game-touch { display: flex; } }
 
     /* 全屏模式：CSS 铺满视口（iOS 也生效），支持 Fullscreen API 的浏览器再进入原生全屏 */
@@ -176,7 +184,7 @@
       width: min(100%, calc((100vh - 170px) * 15 / 13));
       width: min(100%, calc((100dvh - 170px) * 15 / 13)); margin-inline: auto;
     }
-    .game-shell.fs #gameCanvas { border-radius: 8px; }
+    .game-shell.fs .game-stage canvas { border-radius: 8px; }
     .game-shell.fs .game-touch {
       display: flex; width: 100%; max-width: 560px; margin: 0;
     }
@@ -184,11 +192,11 @@
       .game-shell.fs .game-stage { width: min(100%, calc((100dvh - 120px) * 15 / 13)); }
       .dpad button, .bomb-btn { height: 38px; }
     }
-    #snake .game-shell.fs .game-stage {
+    #tank .game-shell.fs .game-stage {
       width: min(100%, calc((100vh - 170px) * 1));
       width: min(100%, calc((100dvh - 170px) * 1));
     }
-    #breakout .game-shell.fs .game-stage {
+    #sim .game-shell.fs .game-stage {
       width: min(100%, calc((100vh - 170px) * 1.2));
       width: min(100%, calc((100dvh - 170px) * 1.2));
     }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>模拟经营 · Game Dev Base</title>
+  <meta name="description" content="在浏览器里经营一家小店：招待顾客、升级店铺、每天结算房租。" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23eab308'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='32' text-anchor='middle' fill='white'%3E🏪%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="bgFractal" aria-hidden="true"></canvas>
+  <div id="progress" aria-hidden="true"></div>
+
+  <header>
+    <div class="wrap">
+      <nav aria-label="主导航">
+        <a href="index.html" class="brand">Game<span> Dev Base</span></a>
+        <button class="menu-btn" id="menuBtn" aria-label="展开菜单" aria-expanded="false">☰</button>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html">首页</a>
+          <a href="bomber.html">炸弹人</a>
+          <a href="tank.html">坦克大战</a>
+          <a href="sim.html">模拟经营</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section id="sim">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Play</span>
+          <h2>模拟经营</h2>
+          <p class="section-sub">经营一家小店：点击顾客结账赚钱，升级店铺，每天结束时结算房租。</p>
+        </div>
+        <div class="game-shell reveal" id="simShell">
+          <button type="button" class="game-quit" aria-label="退出全屏">✕</button>
+          <div class="game-hud">
+            <span>资金 <b id="simMoney">60</b></span>
+            <span>声望 <b id="simRep">5</b></span>
+            <span>天数 <b id="simDay">1</b></span>
+            <span>服务 <b id="simServed">0</b></span>
+            <button type="button" class="game-fs-btn">⛶ 全屏游玩</button>
+          </div>
+          <div class="game-stage">
+            <canvas id="simCanvas" width="480" height="400" tabindex="0" aria-label="模拟经营游戏画面"></canvas>
+            <div class="game-overlay show" id="simOverlay">
+              <strong id="simOverlayTitle">模拟经营</strong>
+              <span id="simOverlayText">顾客头上的进度条是耐心，点击顾客即可结账。声望归零或资金为负就会关门。</span>
+              <button class="btn btn-primary" id="simOverlayBtn">开始营业</button>
+            </div>
+          </div>
+          <div class="sim-upgrades">
+            <button type="button" id="upPrice">💰 提价 (40)</button>
+            <button type="button" id="upDecor">🪴 装修 (60)</button>
+            <button type="button" id="upHelper">🤖 雇助手 (120)</button>
+          </div>
+          <p class="game-help">点击顾客结账 · 提价提高收入 · 装修延长耐心 · 助手自动服务 · 每天结算房租</p>
+          <a class="game-back" href="index.html">← 返回游戏列表</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="year"></span> Game Dev Base · Made with ❤️ and a lot of coffee.
+    </div>
+  </footer>
+
+  <button id="toTop" aria-label="回到顶部">↑</button>
+  <script src="common.js" defer></script>
+  <script src="sim.js" defer></script>
+</body>
+</html>
