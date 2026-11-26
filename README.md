@@ -11,7 +11,7 @@
 3. **打字机文字**：在脚本中修改 `words` 数组（当前是 `Unreal 笔记`、`Unity 笔记` 等）。
 4. **栏目内容**：`index.html` 里的 `<section>` 分别对应站点介绍、内容主题、站点功能、分形画布与意见反馈，直接改文字即可。
 5. **链接**：主站 `https://kuangyi.art/`、笔记 `https://kuangyi.art/notes/#/`、看板 `https://kuangyi.art/stats/`、GitHub `https://github.com/coldestheaven`。
-6. **分形画布**：`#fractal` 区块是纯 Canvas/JS 的曼德勃罗集；参数在脚本底部 `home`、`maxIter`、`palettes` 中调整。
+6. **分形**：`#fractal` 区块是可交互的曼德勃罗集；`#bgFractal` 是全站固定的分形底板（低分辨率、低透明度，上面盖暗色遮罩）。两者共用脚本底部的 `home`、`maxIter`、`palettes` 参数；导航「分形」和首屏「探索分形 ↓」都可跳转到交互区块。
 7. **网站标题与描述**：修改 `<head>` 里的 `<title>`、`<meta name="description">` 和 og 标签。
 
 ## 本地预览
