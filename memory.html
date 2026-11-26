@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>记忆翻牌 · Game Dev Base</title>
+  <meta name="description" content="在浏览器里玩记忆翻牌：翻开卡片找到全部 8 对，挑战最少步数。" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ec4899'/%3E%3Ctext x='32' y='44' font-family='Arial' font-size='32' text-anchor='middle' fill='white'%3E🧠%3C/text%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="progress" aria-hidden="true"></div>
+
+  <header>
+    <div class="wrap">
+      <nav aria-label="主导航">
+        <a href="index.html" class="brand">Game<span> Dev Base</span></a>
+        <button class="menu-btn" id="menuBtn" aria-label="展开菜单" aria-expanded="false">☰</button>
+        <div class="nav-links" id="navLinks">
+          <a href="index.html">首页</a>
+          <a href="bomber.html">炸弹人</a>
+          <a href="tank.html">坦克大战</a>
+          <a href="sim.html">模拟经营</a>
+          <a href="tetris.html">俄罗斯方块</a>
+          <a href="g2048.html">2048</a>
+          <a href="memory.html">记忆翻牌</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section id="memory">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Play</span>
+          <h2>记忆翻牌</h2>
+          <p class="section-sub">每次翻开两张，找出全部 8 对相同图案，步数越少越好。</p>
+        </div>
+        <div class="game-shell reveal" id="memoryShell">
+          <button type="button" class="game-quit" aria-label="退出全屏">✕</button>
+          <div class="game-hud">
+            <span>步数 <b id="memoryMoves">0</b></span>
+            <span>用时 <b id="memoryTime">00:00</b></span>
+            <span>配对 <b id="memoryMatched">0/8</b></span>
+            <span>最佳 <b id="memoryBest">—</b></span>
+            <button type="button" class="game-fs-btn">⛶ 全屏游玩</button>
+          </div>
+          <div class="game-stage">
+            <div class="memory-grid" id="memoryBoard" role="grid" aria-label="记忆翻牌棋盘"></div>
+            <div class="game-overlay show" id="memoryOverlay">
+              <strong id="memoryOverlayTitle">记忆翻牌</strong>
+              <span id="memoryOverlayText">记住翻开过的图案，把 16 张卡片配成 8 对。用时越短、步数越少越厉害。</span>
+              <button class="btn btn-primary" id="memoryOverlayBtn">开始游戏</button>
+            </div>
+          </div>
+          <p class="game-help">点击卡片翻开 · 配对成功不会翻回 · 最佳用时保存在本地</p>
+          <a class="game-back" href="index.html">← 返回游戏列表</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="year"></span> Game Dev Base · Made with ❤️ and a lot of coffee.
+    </div>
+  </footer>
+
+  <button id="toTop" aria-hidden="true">↑</button>
+  <script src="common.js" defer></script>
+  <script src="memory.js" defer></script>
+</body>
+</html>

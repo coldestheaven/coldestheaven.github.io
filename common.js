@@ -1,4 +1,4 @@
-﻿// 全站通用脚本：年份、菜单、滚动、背景分形、全屏管理
+// 全站通用脚本：年份、菜单、滚动、背景分形、全屏管理
 
 // 页脚年份
 const yearEl = document.getElementById('year');
@@ -42,7 +42,7 @@ if ('IntersectionObserver' in window) {
     entries.forEach(entry => {
       if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); }
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.01 });
   document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 } else {
   document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
