@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>kuangyi · 游戏开发基地</title>
-  <meta name="description" content="kuangyi 的个人主页 —— 游戏开发笔记、源码与知识库：Unreal、Unity、C#、C++、Python、着色器、动画与架构。" />
+  <title>游戏开发基地 · Game Dev Base</title>
+  <meta name="description" content="引擎与游戏开发的知识库：笔记、源码与持续整理。内容涵盖 Unreal、Unity、C#、C++、Python、着色器、动画与架构。" />
   <meta name="theme-color" content="#0a0e1a" />
-  <meta property="og:title" content="kuangyi · 游戏开发基地" />
+  <meta property="og:title" content="游戏开发基地 · Game Dev Base" />
   <meta property="og:description" content="笔记 · 源码 · 持续整理。访问 kuangyi.art 阅读游戏开发知识库。" />
   <meta property="og:url" content="https://kuangyi.art/" />
   <meta property="og:type" content="website" />
@@ -244,23 +244,7 @@
     .fractal-controls .btn:hover { border-color: var(--accent); }
     .fractal-tip { text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 12px; }
 
-    /* ============ 时间线 ============ */
-    .timeline { max-width: 720px; margin-inline: auto; position: relative; padding-left: 34px; }
-    .timeline::before {
-      content: ""; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px;
-      background: linear-gradient(var(--accent), var(--accent-2), transparent);
-    }
-    .timeline-item { position: relative; padding-bottom: 38px; }
-    .timeline-item:last-child { padding-bottom: 0; }
-    .timeline-item::before {
-      content: ""; position: absolute; left: -32px; top: 8px; width: 12px; height: 12px;
-      border-radius: 50%; background: var(--bg); border: 3px solid var(--accent);
-    }
-    .timeline-item time { color: var(--accent); font-size: 0.85rem; font-weight: 600; }
-    .timeline-item h3 { margin: 4px 0 6px; font-size: 1.1rem; }
-    .timeline-item p { color: var(--muted); font-size: 0.94rem; }
-
-    /* ============ 联系 ============ */
+    /* ============ 反馈 ============ */
     .contact-box {
       text-align: center; padding: 60px 30px; border-radius: 26px;
       border: 1px solid var(--border);
@@ -268,11 +252,6 @@
     }
     .contact-box h2 { margin-bottom: 14px; }
     .contact-box p { color: var(--muted); margin-bottom: 28px; }
-    .email {
-      font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 600;
-      background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent;
-    }
-    .email:hover { text-decoration: underline; }
 
     /* ============ 页脚 ============ */
     footer {
@@ -332,16 +311,15 @@
   <header>
     <div class="wrap">
       <nav aria-label="主导航">
-        <a href="#top" class="brand">kuangyi<span>.art</span></a>
+        <a href="#top" class="brand">Game<span> Dev Base</span></a>
         <button class="menu-btn" id="menuBtn" aria-label="展开菜单" aria-expanded="false">☰</button>
         <div class="nav-links" id="navLinks">
           <a href="#top">首页</a>
-          <a href="#about">关于</a>
-          <a href="#skills">技能</a>
-          <a href="#projects">项目</a>
+          <a href="#about">站点</a>
+          <a href="#skills">主题</a>
+          <a href="#projects">功能</a>
           <a href="#fractal">分形</a>
-          <a href="#timeline">经历</a>
-          <a href="#contact">联系</a>
+          <a href="#contact">反馈</a>
         </div>
       </nav>
     </div>
@@ -353,24 +331,24 @@
       <div class="wrap hero-grid">
         <div class="hero-copy">
           <div class="badge"><span class="dot"></span> 笔记 · 源码 · 持续整理</div>
-          <h1>你好，我是 <span class="gradient-text">kuangyi</span> 👋</h1>
+          <h1><span class="gradient-text">游戏开发基地</span></h1>
           <div class="typed-line">
-            我是一个 <span id="typed" class="gradient-text"></span><span class="cursor"></span>
+            这里收录 <span id="typed" class="gradient-text"></span><span class="cursor"></span>
           </div>
           <p class="hero-desc">
-            运营「游戏开发基地」—— 一个关于 Unreal、Unity、C#、C++、着色器与架构的个人知识库。公开笔记支持目录浏览、图表预览与源码走读，欢迎来逛逛。
+            引擎与游戏开发的知识库：Unreal、Unity、C#、C++、着色器、动画与架构。公开笔记支持目录浏览、图表预览与源码走读，欢迎来逛逛。
           </p>
           <div class="hero-buttons">
-            <a class="btn btn-primary" href="https://kuangyi.art/" target="_blank" rel="noopener">访问我的网站 ↗</a>
+            <a class="btn btn-primary" href="https://kuangyi.art/" target="_blank" rel="noopener">进入站点 ↗</a>
             <a class="btn btn-ghost" href="https://kuangyi.art/notes/#/" target="_blank" rel="noopener">阅读笔记</a>
           </div>
           <div class="socials">
             <a href="https://kuangyi.art/notes/#/" target="_blank" rel="noopener">笔记库</a>
             <a href="https://github.com/coldestheaven" target="_blank" rel="noopener">GitHub</a>
-            <a href="#contact">联系我 →</a>
+            <a href="#contact">意见反馈 →</a>
           </div>
         </div>
-        <div class="avatar-card" aria-hidden="true"><span>KY</span></div>
+        <div class="avatar-card" aria-hidden="true"><span>GDB</span></div>
       </div>
       <div class="wrap">
         <div class="stats">
@@ -386,20 +364,20 @@
     <section id="about">
       <div class="wrap">
         <div class="section-head reveal">
-          <span class="eyebrow">About Me</span>
-          <h2>关于我</h2>
-          <p class="section-sub">关于我和我的知识库，更多内容见 <a class="gradient-text" href="https://kuangyi.art/" target="_blank" rel="noopener">kuangyi.art</a>。</p>
+          <span class="eyebrow">About</span>
+          <h2>关于本站</h2>
+          <p class="section-sub">引擎与游戏开发的知识库，更多内容见 <a class="gradient-text" href="https://kuangyi.art/" target="_blank" rel="noopener">kuangyi.art</a>。</p>
         </div>
         <div class="grid-3">
           <article class="card reveal">
             <div class="card-icon">📝</div>
-            <h3>游戏开发知识库</h3>
-            <p>在 kuangyi.art 持续整理引擎与游戏开发的公开笔记、源码与图表，支持树形目录浏览。</p>
+            <h3>游戏开发笔记</h3>
+            <p>持续整理的公开笔记、源码与图表，支持树形目录浏览，方便按章节快速定位。</p>
           </article>
           <article class="card reveal">
             <div class="card-icon">🎮</div>
             <h3>引擎与语言</h3>
-            <p>日常使用 Unreal、Unity、C#、C++、Python，关注着色器、动画与架构设计。</p>
+            <p>内容覆盖 Unreal、Unity、C#、C++、Python，以及着色器、动画与架构设计。</p>
           </article>
           <article class="card reveal">
             <div class="card-icon">📖</div>
@@ -414,9 +392,9 @@
     <section id="skills">
       <div class="wrap">
         <div class="section-head reveal">
-          <span class="eyebrow">Skills</span>
-          <h2>技能栈</h2>
-          <p class="section-sub">游戏开发相关引擎、语言与工具链。</p>
+          <span class="eyebrow">Topics</span>
+          <h2>内容主题</h2>
+          <p class="section-sub">笔记涵盖的引擎、语言与工具链。</p>
         </div>
         <div class="tags reveal">
           <span class="tag">Unreal Engine</span>
@@ -438,9 +416,9 @@
     <section id="projects">
       <div class="wrap">
         <div class="section-head reveal">
-          <span class="eyebrow">Projects</span>
-          <h2>精选项目</h2>
-          <p class="section-sub">我的站点与持续维护的工具，全部来自 kuangyi.art。</p>
+          <span class="eyebrow">Features</span>
+          <h2>站点功能</h2>
+          <p class="section-sub">kuangyi.art 上的主要栏目与工具。</p>
         </div>
         <div class="grid-3">
           <article class="card project-card reveal">
@@ -502,44 +480,15 @@
       </div>
     </section>
 
-    <!-- 经历 -->
-    <section id="timeline">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <span class="eyebrow">Journey</span>
-          <h2>成长历程</h2>
-          <p class="section-sub">一路走来的一些节点。</p>
-        </div>
-        <div class="timeline">
-          <div class="timeline-item reveal">
-            <time>现在</time>
-            <h3>持续整理游戏开发知识库</h3>
-            <p>在 kuangyi.art 不断补充笔记与源码，打磨阅读体验，探索引擎与渲染的更多细节。</p>
-          </div>
-          <div class="timeline-item reveal">
-            <time>站点上线</time>
-            <h3>「游戏开发基地」发布</h3>
-            <p>把散落的笔记整理成可检索、可阅读的知识库，并加入图表、公式与源码预览。</p>
-          </div>
-          <div class="timeline-item reveal">
-            <time>起点</time>
-            <h3>踏入游戏开发</h3>
-            <p>从引擎与脚本开始，逐步深入 C# / C++、着色器、动画与架构设计。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- 联系 -->
     <section id="contact">
       <div class="wrap">
         <div class="contact-box reveal">
-          <span class="eyebrow">Get In Touch</span>
-          <h2>聊聊吧！</h2>
-          <p>有问题、有想法，或想聊聊游戏开发？可以在站点意见栏留言，也可以发邮件给我。</p>
-          <a class="email" href="mailto:hello@example.com">hello@example.com</a>
+          <span class="eyebrow">Feedback</span>
+          <h2>意见反馈</h2>
+          <p>对站点或笔记有想法？到意见栏留言，提交后会直接发到邮箱。</p>
           <div class="hero-buttons" style="justify-content:center">
-            <a class="btn btn-primary" href="https://kuangyi.art/" target="_blank" rel="noopener">站点意见栏 ↗</a>
+            <a class="btn btn-primary" href="https://kuangyi.art/" target="_blank" rel="noopener">前往意见栏 ↗</a>
             <a class="btn btn-ghost" href="https://github.com/coldestheaven" target="_blank" rel="noopener">GitHub</a>
           </div>
         </div>
@@ -549,7 +498,7 @@
 
   <footer>
     <div class="wrap">
-      © <span id="year"></span> kuangyi · 游戏开发基地 · Made with ❤️ and a lot of coffee.
+      © <span id="year"></span> 游戏开发基地 · Game Dev Base · Made with ❤️ and a lot of coffee.
     </div>
   </footer>
 
@@ -560,7 +509,7 @@
     document.getElementById('year').textContent = new Date().getFullYear();
 
     // 打字机效果
-    const words = ['游戏开发者', '笔记作者', 'Unreal / Unity 爱好者', '持续学习者'];
+    const words = ['Unreal 笔记', 'Unity 笔记', '着色器与渲染', '架构与动画'];
     const typed = document.getElementById('typed');
     let wi = 0, ci = 0, deleting = false;
     function tick() {
