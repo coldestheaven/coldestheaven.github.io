@@ -48,16 +48,84 @@ if ('IntersectionObserver' in window) {
   document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
 }
 
+// 虚拟摇杆：拖动方向键，松手自动回中；游戏通过 joystickmove / joystickend 事件读取
+window.arcadeJoystick = (function () {
+  const THRESHOLD = 0.38; // 归一化后超过该距离才判定方向
+  function init(el) {
+    if (!el || el.dataset.joystickReady) return null;
+    el.dataset.joystickReady = '1';
+    const knob = el.querySelector('.joystick-knob');
+    let pointerId = null;
+
+    function update(dx, dy) {
+      const box = el.getBoundingClientRect();
+      const knobR = knob ? knob.getBoundingClientRect().width / 2 : 24;
+      const radius = Math.max(16, box.width / 2 - knobR - 4);
+      const dist = Math.hypot(dx, dy);
+      const scale = dist > radius ? radius / dist : 1;
+      const kx = dx * scale, ky = dy * scale;
+      if (knob) knob.style.transform = 'translate(' + kx + 'px,' + ky + 'px)';
+      let dir = null;
+      if (dist >= THRESHOLD * radius) {
+        dir = Math.abs(dx) > Math.abs(dy)
+          ? (dx < 0 ? 'left' : 'right')
+          : (dy < 0 ? 'up' : 'down');
+      }
+      el.classList.toggle('active', !!dir);
+      el.setAttribute('aria-pressed', dir ? 'true' : 'false');
+      el.dispatchEvent(new CustomEvent('joystickmove', {
+        detail: { x: kx / radius, y: ky / radius, dir: dir }
+      }));
+    }
+
+    function reset() {
+      pointerId = null;
+      el.classList.remove('dragging');
+      update(0, 0);
+      el.dispatchEvent(new CustomEvent('joystickend'));
+    }
+
+    el.setAttribute('aria-pressed', 'false');
+    el.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      if (pointerId !== null) return;
+      pointerId = e.pointerId;
+      el.classList.add('dragging');
+      try { el.setPointerCapture(e.pointerId); } catch (_) {}
+      const r = el.getBoundingClientRect();
+      update(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+    });
+    el.addEventListener('pointermove', e => {
+      if (e.pointerId !== pointerId) return;
+      e.preventDefault();
+      const r = el.getBoundingClientRect();
+      update(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+    });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev =>
+      el.addEventListener(ev, e => {
+        if (pointerId === null) return;
+        if (e.pointerId !== undefined && e.pointerId !== pointerId) return;
+        reset();
+      }));
+    window.addEventListener('blur', () => { if (pointerId !== null) reset(); });
+    return { reset: reset };
+  }
+  function initAll() { document.querySelectorAll('[data-joystick]').forEach(init); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAll);
+  else initAll();
+  return { init: init, initAll: initAll };
+})();
+
 // 游戏目录：首页筛选与游戏页「上一款 / 下一款」共用
 const GAMES = [
   { file: 'bomber.html', name: '炸弹人', icon: '💣', category: 'action',
-    tip: 'WASD / 方向键移动，空格放炸弹。炸弹会连锁引爆，炸开砖块有机会获得火力、炸弹数与加速道具；消灭全部敌人即可过关。手机用屏幕方向键和 💣 按钮。' },
+    tip: 'WASD / 方向键移动，空格放炸弹。炸弹会连锁引爆，炸开砖块有机会获得火力、炸弹数与加速道具；消灭全部敌人即可过关。手机拖动虚拟摇杆移动、点 💣 按钮放炸弹。' },
   { file: 'tank.html', name: '坦克大战', icon: '🛠️', category: 'action',
-    tip: '方向键 / WASD 驾驶坦克，空格开炮。砖墙可以打穿，钢墙打不穿；守住底部基地，消灭这一关的全部敌军。手机用屏幕方向键和开火按钮。' },
+    tip: '方向键 / WASD 驾驶坦克，空格开炮。砖墙可以打穿，钢墙打不穿；守住底部基地，消灭这一关的全部敌军。手机拖动虚拟摇杆驾驶、点开火按钮射击。' },
   { file: 'sim.html', name: '模拟经营', icon: '🏪', category: 'biz',
     tip: '点击有耐心的顾客结账赚钱。提价提高单次收入但会加快顾客流失，装修延长耐心，雇助手可以自动服务。每天结束结算房租，别让资金变成负数。' },
   { file: 'tetris.html', name: '俄罗斯方块', icon: '🧱', category: 'puzzle',
-    tip: '← → 移动，↑ 旋转，↓ 加速，空格直接落下，P 暂停。把方块拼成完整横行即可消除，一次消得越多得分越高；等级随消除行数提升，下落也会更快。' },
+    tip: '← → 移动，↑ 旋转，↓ 加速，空格直接落下，P 暂停。把方块拼成完整横行即可消除，一次消得越多得分越高；等级随消除行数提升，下落也会更快。手机拖动摇杆：左右移动、上旋转、下加速，点「落下」直接落底。' },
   { file: 'g2048.html', name: '2048', icon: '🔢', category: 'puzzle',
     tip: '方向键 / WASD 或手指滑动，让相同数字碰撞合并。每一步都会出现一个新方块，凑出 2048 即达成目标；最高分保存在本机浏览器中。' },
   { file: 'memory.html', name: '记忆翻牌', icon: '🧠', category: 'puzzle',

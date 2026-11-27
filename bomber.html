@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -52,22 +52,18 @@
             <canvas id="gameCanvas" width="480" height="416" tabindex="0" aria-label="炸弹人游戏画面"></canvas>
             <div class="game-overlay show" id="gameOverlay">
               <strong id="overlayTitle">炸弹人</strong>
-              <span id="overlayText">WASD / 方向键移动、空格放炸弹；手机用下方方向键和 💣 按钮。炸开砖块、消灭所有敌人 —— 小心别把自己炸到！</span>
+              <span id="overlayText">WASD / 方向键移动、空格放炸弹；手机拖动下方摇杆移动、点 💣 放炸弹。炸开砖块、消灭所有敌人 —— 小心别把自己炸到！</span>
               <button class="btn btn-primary" id="overlayBtn">开始游戏</button>
             </div>
           </div>
           <div class="game-touch">
-            <div class="dpad">
-              <button type="button" data-dir="up" aria-label="上">▲</button>
-              <div class="dpad-row">
-                <button type="button" data-dir="left" aria-label="左">◀</button>
-                <button type="button" data-dir="down" aria-label="下">▼</button>
-                <button type="button" data-dir="right" aria-label="右">▶</button>
-              </div>
+            <div class="joystick" id="bomberJoystick" data-joystick role="application" aria-label="虚拟摇杆：拖动移动">
+              <span class="joystick-hint">拖动移动</span>
+              <div class="joystick-knob"></div>
             </div>
             <button type="button" class="bomb-btn" id="touchBomb">💣 放炸弹</button>
           </div>
-          <p class="game-help">WASD / 方向键移动 · 空格放炸弹 · 手机可用屏幕方向键 · F 火力 / B 炸弹数 / S 加速</p>
+          <p class="game-help">WASD / 方向键移动 · 空格放炸弹 · 手机拖动摇杆移动 · F 火力 / B 炸弹数 / S 加速</p>
           <a class="game-back" href="index.html">← 返回游戏列表</a>
         </div>
       </div>

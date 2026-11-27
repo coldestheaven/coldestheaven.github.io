@@ -57,17 +57,13 @@
             </div>
           </div>
           <div class="game-touch">
-            <div class="dpad">
-              <button type="button" data-act="rotate" aria-label="旋转">⟳</button>
-              <div class="dpad-row">
-                <button type="button" data-act="left" aria-label="左">◀</button>
-                <button type="button" data-act="down" aria-label="下">▼</button>
-                <button type="button" data-act="right" aria-label="右">▶</button>
-              </div>
+            <div class="joystick" id="tetrisJoystick" data-joystick role="application" aria-label="虚拟摇杆：左右移动、上旋转、下加速">
+              <span class="joystick-hint">左右 · 上旋 · 下加速</span>
+              <div class="joystick-knob"></div>
             </div>
             <button type="button" class="bomb-btn" data-act="drop">⬇ 落下</button>
           </div>
-          <p class="game-help">← → 移动 · ↑ 旋转 · ↓ 加速 · 空格落下 · P 暂停 · 手机可用屏幕按钮</p>
+          <p class="game-help">← → 移动 · ↑ 旋转 · ↓ 加速 · 空格落下 · P 暂停 · 手机拖动摇杆操作</p>
           <a class="game-back" href="index.html">← 返回游戏列表</a>
         </div>
       </div>

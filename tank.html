@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
@@ -51,22 +51,18 @@
             <canvas id="tankCanvas" width="480" height="480" tabindex="0" aria-label="坦克大战游戏画面"></canvas>
             <div class="game-overlay show" id="tankOverlay">
               <strong id="tankOverlayTitle">坦克大战</strong>
-              <span id="tankOverlayText">WASD / 方向键移动，空格发射炮弹；手机用方向键与 🔫 按钮。砖墙可炸开，钢墙打不穿。</span>
+              <span id="tankOverlayText">WASD / 方向键移动，空格发射炮弹；手机拖动摇杆驾驶、点 🔫 开炮。砖墙可炸开，钢墙打不穿。</span>
               <button class="btn btn-primary" id="tankOverlayBtn">开始游戏</button>
             </div>
           </div>
           <div class="game-touch">
-            <div class="dpad">
-              <button type="button" data-dir="up" aria-label="上">▲</button>
-              <div class="dpad-row">
-                <button type="button" data-dir="left" aria-label="左">◀</button>
-                <button type="button" data-dir="down" aria-label="下">▼</button>
-                <button type="button" data-dir="right" aria-label="右">▶</button>
-              </div>
+            <div class="joystick" id="tankJoystick" data-joystick role="application" aria-label="虚拟摇杆：拖动驾驶">
+              <span class="joystick-hint">拖动驾驶</span>
+              <div class="joystick-knob"></div>
             </div>
             <button type="button" class="bomb-btn" id="tankFire">🔫 开炮</button>
           </div>
-          <p class="game-help">方向键 / WASD 移动 · 空格开炮 · 手机可用屏幕按钮</p>
+          <p class="game-help">方向键 / WASD 移动 · 空格开炮 · 手机拖动摇杆驾驶、点开炮按钮</p>
           <a class="game-back" href="index.html">← 返回游戏列表</a>
         </div>
       </div>

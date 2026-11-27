@@ -156,32 +156,49 @@
     if (single[k]) { e.preventDefault(); single[k](); }
     else if (e.key.toLowerCase() === 'p') { e.preventDefault(); pause(); }
   });
-  document.querySelectorAll('#tetris [data-act]').forEach(b => {
-    const act = b.dataset.act;
-    let timer;
-    const doAct = () => {
-      if (state !== 'playing') return;
-      if (act === 'left') move(-1);
-      else if (act === 'right') move(1);
-      else if (act === 'rotate') rotate();
-      else if (act === 'down') { step(); dropTimer = 0; }
-      else if (act === 'drop') drop();
-    };
-    const release = () => {
-      clearInterval(timer); timer = null;
-      b.classList.remove('is-pressed'); b.setAttribute('aria-pressed', 'false');
-    };
-    b.setAttribute('aria-pressed', 'false');
-    b.addEventListener('pointerdown', e => {
+  const dropBtn = document.querySelector('#tetris [data-act="drop"]');
+  if (dropBtn) {
+    let dropHandled = false;
+    dropBtn.setAttribute('aria-pressed', 'false');
+    dropBtn.addEventListener('pointerdown', e => {
       e.preventDefault();
-      try { b.setPointerCapture?.(e.pointerId); } catch (_) {}
-      b.classList.add('is-pressed'); b.setAttribute('aria-pressed', 'true');
-      doAct();
-      if (act === 'left' || act === 'right' || act === 'down') timer = setInterval(doAct, 110);
+      try { dropBtn.setPointerCapture?.(e.pointerId); } catch (_) {}
+      dropHandled = true;
+      dropBtn.classList.add('is-pressed'); dropBtn.setAttribute('aria-pressed', 'true');
+      if (state === 'playing') drop();
     });
-    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => b.addEventListener(ev, release));
-    window.addEventListener('blur', release);
-  });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev =>
+      dropBtn.addEventListener(ev, () => {
+        dropBtn.classList.remove('is-pressed'); dropBtn.setAttribute('aria-pressed', 'false');
+      }));
+    dropBtn.addEventListener('click', () => {
+      if (dropHandled) { dropHandled = false; return; }
+      if (state === 'playing') drop();
+    });
+  }
+  const stick = document.getElementById('tetrisJoystick');
+  if (stick) {
+    let stickTimer = null, stickDir = null;
+    const act = dir => {
+      if (state !== 'playing') return;
+      if (dir === 'left') move(-1);
+      else if (dir === 'right') move(1);
+      else if (dir === 'up') rotate();
+      else if (dir === 'down') { step(); dropTimer = 0; }
+    };
+    const stop = () => { clearInterval(stickTimer); stickTimer = null; stickDir = null; };
+    stick.addEventListener('joystickmove', e => {
+      const dir = e.detail.dir;
+      if (dir === stickDir) return;
+      stop();
+      stickDir = dir;
+      if (!dir) return;
+      act(dir);
+      stickTimer = setInterval(() => act(dir), dir === 'up' ? 180 : 110);
+    });
+    stick.addEventListener('joystickend', stop);
+    window.addEventListener('blur', stop);
+  }
   pauseBtn.addEventListener('click', () => { if (state === 'playing' || state === 'paused') pause(); });
   btn.addEventListener('click', () => {
     window.arcadeFs.enter(document.getElementById('tetrisShell'));

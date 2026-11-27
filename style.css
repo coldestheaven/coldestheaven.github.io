@@ -155,48 +155,45 @@
     .game-overlay span { color: var(--muted); font-size: 0.9rem; }
     .game-touch {
       display: none; justify-content: space-between; align-items: center;
-      margin-top: 16px; gap: 12px;
+      margin-top: 16px; padding-bottom: 14px; gap: 12px;
     }
-    .dpad {
-      --dpad-size: 54px;
-      display: grid; grid-template-columns: repeat(3, var(--dpad-size)); gap: 6px;
-      justify-content: center; padding: 7px; border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.035);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-    .dpad button, .bomb-btn {
-      touch-action: none; user-select: none; cursor: pointer;
+    .joystick {
+      --js-size: 116px; --knob-size: 48px;
+      position: relative; flex: none; width: var(--js-size); height: var(--js-size);
+      border-radius: 50%; cursor: pointer; touch-action: none; user-select: none;
       -webkit-tap-highlight-color: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.025) 60%, rgba(0, 0, 0, 0.32));
+      box-shadow: inset 0 2px 8px rgba(255, 255, 255, 0.08), inset 0 -8px 18px rgba(0, 0, 0, 0.5), 0 6px 18px rgba(0, 0, 0, 0.35);
     }
-    .dpad button {
-      position: relative; display: grid; place-items: center;
-      width: var(--dpad-size); height: var(--dpad-size);
-      border: 1px solid var(--border); border-radius: 15px;
-      background: var(--surface); color: var(--text); font-size: 1.15rem; line-height: 1;
+    .joystick::before, .joystick::after {
+      content: ""; position: absolute; pointer-events: none; background: rgba(255, 255, 255, 0.15);
     }
-    .dpad button::after {
-      position: absolute; bottom: 4px; font-size: 0.55rem; font-weight: 700;
-      letter-spacing: 0.06em; color: var(--muted); opacity: 0.85;
+    .joystick::before { left: 21%; right: 21%; top: 50%; height: 1px; }
+    .joystick::after { top: 21%; bottom: 21%; left: 50%; width: 1px; }
+    .joystick-knob {
+      position: absolute; left: 50%; top: 50%;
+      width: var(--knob-size); height: var(--knob-size);
+      margin: calc(var(--knob-size) / -2) 0 0 calc(var(--knob-size) / -2);
+      border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.35);
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.12));
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      transition: transform 0.08s ease-out, box-shadow 0.2s, border-color 0.2s, background 0.2s;
+      pointer-events: none;
     }
-    .dpad button[data-dir="up"]::after { content: "W"; }
-    .dpad button[data-dir="left"]::after { content: "A"; }
-    .dpad button[data-dir="down"]::after { content: "S"; }
-    .dpad button[data-dir="right"]::after { content: "D"; }
-    .dpad button[data-act="rotate"]::after { content: "↑"; }
-    .dpad button[data-act="left"]::after { content: "←"; }
-    .dpad button[data-act="down"]::after { content: "↓"; }
-    .dpad button[data-act="right"]::after { content: "→"; }
-    .dpad button:nth-child(1) { grid-column: 2; }
-    .dpad-row { grid-column: 1 / -1; display: flex; gap: 6px; justify-content: center; }
+    .joystick.dragging .joystick-knob { transition: none; }
+    .joystick-hint {
+      position: absolute; left: 50%; bottom: -16px; transform: translateX(-50%);
+      white-space: nowrap; font-size: 0.62rem; color: var(--muted); pointer-events: none;
+    }
+    .joystick:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     .bomb-btn {
       min-height: 54px; padding: 0 20px; border: 1px solid var(--border);
       border-radius: 15px; background: var(--surface); color: var(--text);
-      font-size: 0.9rem; font-weight: 700;
+      font-size: 0.9rem; font-weight: 700; touch-action: none; user-select: none;
+      -webkit-tap-highlight-color: transparent; cursor: pointer;
     }
-    .dpad button:focus-visible, .bomb-btn:focus-visible {
-      outline: 2px solid var(--accent); outline-offset: 2px;
-    }
+    .bomb-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .game-help { text-align: center; color: var(--muted); font-size: 0.82rem; margin-top: 14px; }
     .sim-upgrades { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
     .sim-upgrades button {
@@ -271,8 +268,8 @@
     }
     @media (max-height: 560px) {
       .game-shell.fs .game-stage { width: min(100%, calc((100dvh - 120px) * 15 / 13)); }
-      .dpad { --dpad-size: 46px; padding: 5px; gap: 5px; }
-      .dpad button::after { display: none; }
+      .joystick { --js-size: 92px; --knob-size: 40px; }
+      .joystick-hint { display: none; }
       .bomb-btn { min-height: 46px; }
     }
     #tank .game-shell.fs .game-stage {
@@ -610,18 +607,16 @@
     .game-touch {
       padding-top: 16px; border-top: 1px dashed rgba(255, 255, 255, 0.1);
     }
-    .dpad button, .bomb-btn {
-      border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 15px;
+    .bomb-btn {
+      border: 1px solid rgba(255, 255, 255, 0.14);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.03));
       box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
       transition: transform 0.1s, box-shadow 0.1s, border-color 0.2s, background 0.2s, color 0.2s;
     }
-    .dpad button:active, .dpad button.is-pressed, .dpad button[aria-pressed="true"], .bomb-btn:active {
-      transform: translateY(2px); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35), 0 0 18px var(--game-glow);
+    .joystick.active .joystick-knob, .bomb-btn:active {
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35), 0 0 22px var(--game-glow);
       border-color: var(--game-accent); background: var(--game-glow); color: var(--game-accent);
     }
-    .dpad button:active::after, .dpad button.is-pressed::after,
-    .dpad button[aria-pressed="true"]::after { color: var(--game-accent); opacity: 1; }
     .bomb-btn {
       border-color: transparent; color: #fff; font-weight: 800;
       background: linear-gradient(135deg, var(--game-accent), #7c5cff);

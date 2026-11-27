@@ -247,31 +247,16 @@
         if (e.code === 'Space' || k === ' ') { e.preventDefault(); if (!e.repeat) placeBomb(); }
       });
       window.addEventListener('keyup', e => { keys.delete(e.key.toLowerCase()); });
-      const dirButtons = [...document.querySelectorAll('[data-dir]')];
-      const setPressed = (btn, on) => {
-        btn.classList.toggle('is-pressed', on);
-        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-      };
-      const releaseDir = (btn, dir) => {
-        if (touchDir === dir) touchDir = null;
-        setPressed(btn, false);
-      };
-      const clearDirs = () => {
-        keys.clear(); touchDir = null;
-        dirButtons.forEach(b => setPressed(b, false));
-      };
+      const clearDirs = () => { keys.clear(); touchDir = null; };
       window.addEventListener('blur', clearDirs);
-      dirButtons.forEach(btn => {
-        const dir = btn.dataset.dir;
-        btn.setAttribute('aria-pressed', 'false');
-        btn.addEventListener('pointerdown', e => {
-          e.preventDefault();
-          try { btn.setPointerCapture?.(e.pointerId); } catch (_) {}
-          touchDir = dir; gameActive = true; setPressed(btn, true);
+      const stick = document.getElementById('bomberJoystick');
+      if (stick) {
+        stick.addEventListener('joystickmove', e => {
+          touchDir = e.detail.dir;
+          if (touchDir) gameActive = true;
         });
-        ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev =>
-          btn.addEventListener(ev, () => releaseDir(btn, dir)));
-      });
+        stick.addEventListener('joystickend', () => { touchDir = null; });
+      }
       el('touchBomb').addEventListener('pointerdown', e => { e.preventDefault(); gameActive = true; placeBomb(); });
 
       // 全屏由 common.js 统一管理
