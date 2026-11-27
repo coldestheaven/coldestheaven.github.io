@@ -157,16 +157,46 @@
       display: none; justify-content: space-between; align-items: center;
       margin-top: 16px; gap: 12px;
     }
-    .dpad { display: grid; grid-template-columns: repeat(3, 46px); gap: 4px; justify-content: center; }
-    .dpad button, .bomb-btn {
-      height: 44px; border: 1px solid var(--border); border-radius: 10px;
-      background: var(--surface); color: var(--text); font-size: 1.05rem;
-      touch-action: none; user-select: none; cursor: pointer;
+    .dpad {
+      --dpad-size: 54px;
+      display: grid; grid-template-columns: repeat(3, var(--dpad-size)); gap: 6px;
+      justify-content: center; padding: 7px; border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.035);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
-    .dpad button:active, .bomb-btn:active { background: var(--surface-hover); border-color: var(--accent); }
+    .dpad button, .bomb-btn {
+      touch-action: none; user-select: none; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .dpad button {
+      position: relative; display: grid; place-items: center;
+      width: var(--dpad-size); height: var(--dpad-size);
+      border: 1px solid var(--border); border-radius: 15px;
+      background: var(--surface); color: var(--text); font-size: 1.15rem; line-height: 1;
+    }
+    .dpad button::after {
+      position: absolute; bottom: 4px; font-size: 0.55rem; font-weight: 700;
+      letter-spacing: 0.06em; color: var(--muted); opacity: 0.85;
+    }
+    .dpad button[data-dir="up"]::after { content: "W"; }
+    .dpad button[data-dir="left"]::after { content: "A"; }
+    .dpad button[data-dir="down"]::after { content: "S"; }
+    .dpad button[data-dir="right"]::after { content: "D"; }
+    .dpad button[data-act="rotate"]::after { content: "↑"; }
+    .dpad button[data-act="left"]::after { content: "←"; }
+    .dpad button[data-act="down"]::after { content: "↓"; }
+    .dpad button[data-act="right"]::after { content: "→"; }
     .dpad button:nth-child(1) { grid-column: 2; }
-    .dpad-row { grid-column: 1 / -1; display: flex; gap: 4px; justify-content: center; }
-    .bomb-btn { padding: 0 18px; font-size: 0.9rem; }
+    .dpad-row { grid-column: 1 / -1; display: flex; gap: 6px; justify-content: center; }
+    .bomb-btn {
+      min-height: 54px; padding: 0 20px; border: 1px solid var(--border);
+      border-radius: 15px; background: var(--surface); color: var(--text);
+      font-size: 0.9rem; font-weight: 700;
+    }
+    .dpad button:focus-visible, .bomb-btn:focus-visible {
+      outline: 2px solid var(--accent); outline-offset: 2px;
+    }
     .game-help { text-align: center; color: var(--muted); font-size: 0.82rem; margin-top: 14px; }
     .sim-upgrades { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
     .sim-upgrades button {
@@ -241,7 +271,9 @@
     }
     @media (max-height: 560px) {
       .game-shell.fs .game-stage { width: min(100%, calc((100dvh - 120px) * 15 / 13)); }
-      .dpad button, .bomb-btn { height: 38px; }
+      .dpad { --dpad-size: 46px; padding: 5px; gap: 5px; }
+      .dpad button::after { display: none; }
+      .bomb-btn { min-height: 46px; }
     }
     #tank .game-shell.fs .game-stage {
       width: min(100%, calc((100vh - 170px) * 1));
@@ -252,8 +284,8 @@
       width: min(100%, calc((100dvh - 170px) * 1.2));
     }
     #tetris .game-shell.fs .game-stage {
-      width: min(100%, calc((100vh - 170px) * 0.5));
-      width: min(100%, calc((100dvh - 170px) * 0.5));
+      width: min(100%, calc((100vh - 170px) * 0.43));
+      width: min(100%, calc((100dvh - 170px) * 0.43));
     }
     #g2048 .game-shell.fs .game-stage, #memory .game-shell.fs .game-stage {
       width: min(100%, calc((100vh - 170px) * 1));
@@ -579,19 +611,25 @@
       padding-top: 16px; border-top: 1px dashed rgba(255, 255, 255, 0.1);
     }
     .dpad button, .bomb-btn {
-      border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 15px;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.03));
       box-shadow: 0 4px 0 rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-      transition: transform 0.1s, box-shadow 0.1s, border-color 0.2s, background 0.2s;
+      transition: transform 0.1s, box-shadow 0.1s, border-color 0.2s, background 0.2s, color 0.2s;
     }
-    .dpad button:active, .bomb-btn:active {
-      transform: translateY(2px); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
-      border-color: var(--game-accent); background: var(--game-glow);
+    .dpad button:active, .dpad button.is-pressed, .dpad button[aria-pressed="true"], .bomb-btn:active {
+      transform: translateY(2px); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35), 0 0 18px var(--game-glow);
+      border-color: var(--game-accent); background: var(--game-glow); color: var(--game-accent);
     }
+    .dpad button:active::after, .dpad button.is-pressed::after,
+    .dpad button[aria-pressed="true"]::after { color: var(--game-accent); opacity: 1; }
     .bomb-btn {
       border-color: transparent; color: #fff; font-weight: 800;
       background: linear-gradient(135deg, var(--game-accent), #7c5cff);
       box-shadow: 0 6px 20px var(--game-glow);
+    }
+    .bomb-btn::after {
+      content: "空格"; margin-left: 8px; font-size: 0.62rem; font-weight: 600;
+      opacity: 0.75; vertical-align: 1px;
     }
     .sim-upgrades button {
       border-color: rgba(255, 255, 255, 0.14);

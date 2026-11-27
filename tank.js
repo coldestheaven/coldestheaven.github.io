@@ -215,17 +215,41 @@
     const k = e.key.toLowerCase();
     keys.delete(k); if (e.code === 'Space') keys.delete(' ');
   });
-  document.querySelectorAll('#tank [data-dir]').forEach(b => {
+  const dirButtons = [...document.querySelectorAll('#tank [data-dir]')];
+  const setPressed = (btn, on) => {
+    btn.classList.toggle('is-pressed', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  };
+  const clearDirs = () => {
+    keys.clear(); touchDir = null; touchFire = false;
+    dirButtons.forEach(b => setPressed(b, false));
+    if (fireBtn) setPressed(fireBtn, false);
+  };
+  window.addEventListener('blur', clearDirs);
+  dirButtons.forEach(b => {
     const dir = b.dataset.dir;
-    b.addEventListener('pointerdown', e => { e.preventDefault(); touchDir = dir; });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
-      b.addEventListener(ev, () => { if (touchDir === dir) touchDir = null; }));
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      try { b.setPointerCapture?.(e.pointerId); } catch (_) {}
+      touchDir = dir; setPressed(b, true);
+    });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev =>
+      b.addEventListener(ev, () => {
+        if (touchDir === dir) touchDir = null;
+        setPressed(b, false);
+      }));
   });
   const fireBtn = document.getElementById('tankFire');
   if (fireBtn) {
-    fireBtn.addEventListener('pointerdown', e => { e.preventDefault(); touchFire = true; });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
-      fireBtn.addEventListener(ev, () => { touchFire = false; }));
+    fireBtn.setAttribute('aria-pressed', 'false');
+    fireBtn.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      try { fireBtn.setPointerCapture?.(e.pointerId); } catch (_) {}
+      touchFire = true; setPressed(fireBtn, true);
+    });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev =>
+      fireBtn.addEventListener(ev, () => { touchFire = false; setPressed(fireBtn, false); }));
   }
   btn.addEventListener('click', () => {
     window.arcadeFs.enter(document.getElementById('tankShell'));
@@ -234,7 +258,7 @@
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(entries => {
       active = entries[0].isIntersecting;
-      if (!active) { keys.clear(); touchDir = null; touchFire = false; }
+      if (!active) clearDirs();
     }, { threshold: 0.1 }).observe(canvas);
   } else active = true;
   buildMap(); totalEnemies = 7; updateHud(); requestAnimationFrame(loop);

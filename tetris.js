@@ -167,11 +167,20 @@
       else if (act === 'down') { step(); dropTimer = 0; }
       else if (act === 'drop') drop();
     };
+    const release = () => {
+      clearInterval(timer); timer = null;
+      b.classList.remove('is-pressed'); b.setAttribute('aria-pressed', 'false');
+    };
+    b.setAttribute('aria-pressed', 'false');
     b.addEventListener('pointerdown', e => {
-      e.preventDefault(); doAct();
+      e.preventDefault();
+      try { b.setPointerCapture?.(e.pointerId); } catch (_) {}
+      b.classList.add('is-pressed'); b.setAttribute('aria-pressed', 'true');
+      doAct();
       if (act === 'left' || act === 'right' || act === 'down') timer = setInterval(doAct, 110);
     });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => b.addEventListener(ev, () => clearInterval(timer)));
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev => b.addEventListener(ev, release));
+    window.addEventListener('blur', release);
   });
   pauseBtn.addEventListener('click', () => { if (state === 'playing' || state === 'paused') pause(); });
   btn.addEventListener('click', () => {

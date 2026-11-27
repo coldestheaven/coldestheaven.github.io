@@ -247,12 +247,30 @@
         if (e.code === 'Space' || k === ' ') { e.preventDefault(); if (!e.repeat) placeBomb(); }
       });
       window.addEventListener('keyup', e => { keys.delete(e.key.toLowerCase()); });
-      window.addEventListener('blur', () => { keys.clear(); touchDir = null; });
-      document.querySelectorAll('[data-dir]').forEach(btn => {
+      const dirButtons = [...document.querySelectorAll('[data-dir]')];
+      const setPressed = (btn, on) => {
+        btn.classList.toggle('is-pressed', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      };
+      const releaseDir = (btn, dir) => {
+        if (touchDir === dir) touchDir = null;
+        setPressed(btn, false);
+      };
+      const clearDirs = () => {
+        keys.clear(); touchDir = null;
+        dirButtons.forEach(b => setPressed(b, false));
+      };
+      window.addEventListener('blur', clearDirs);
+      dirButtons.forEach(btn => {
         const dir = btn.dataset.dir;
-        btn.addEventListener('pointerdown', e => { e.preventDefault(); touchDir = dir; gameActive = true; });
-        ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
-          btn.addEventListener(ev, () => { if (touchDir === dir) touchDir = null; }));
+        btn.setAttribute('aria-pressed', 'false');
+        btn.addEventListener('pointerdown', e => {
+          e.preventDefault();
+          try { btn.setPointerCapture?.(e.pointerId); } catch (_) {}
+          touchDir = dir; gameActive = true; setPressed(btn, true);
+        });
+        ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(ev =>
+          btn.addEventListener(ev, () => releaseDir(btn, dir)));
       });
       el('touchBomb').addEventListener('pointerdown', e => { e.preventDefault(); gameActive = true; placeBomb(); });
 
@@ -266,7 +284,7 @@
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(entries => {
           gameActive = entries[0].isIntersecting;
-          if (!gameActive) { keys.clear(); touchDir = null; }
+          if (!gameActive) clearDirs();
         }, { threshold: 0.15 }).observe(canvas);
       }
       makeMaze(); player = actor(1, 1); enemies = []; bombs = []; flames = []; drops = []; updateHud();
