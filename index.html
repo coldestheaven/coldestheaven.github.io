@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>游戏列表 · Game Dev Base</title>
-  <meta name="description" content="炸弹人、坦克大战、模拟经营 —— 几个可以直接在浏览器里玩的小游戏。" />
+  <meta name="description" content="炸弹人、坦克大战、模拟经营、俄罗斯方块、2048、记忆翻牌 —— 六款可以直接在浏览器里玩的小游戏。" />
   <meta name="theme-color" content="#0a0e1a" />
   <meta property="og:title" content="游戏列表 · Game Dev Base" />
   <meta property="og:description" content="几个可以直接在浏览器里玩的小游戏。" />
@@ -41,8 +41,23 @@
           <h2>游戏列表</h2>
           <p class="section-sub">点开就能玩，支持电脑键盘与手机触屏。</p>
         </div>
+
+        <div class="home-highlights reveal" aria-label="站点特色">
+          <span>⚡ 即开即玩</span>
+          <span>⌨️ 键盘 / 📱 触屏</span>
+          <span>🏆 本地记录</span>
+          <a id="resumeLink" class="resume-link" href="#" hidden>继续上次 →</a>
+        </div>
+
+        <div class="game-filters reveal" role="group" aria-label="按类型筛选游戏">
+          <button type="button" class="active" data-filter="all" aria-pressed="true">全部 <small id="gameCount">6</small></button>
+          <button type="button" data-filter="action" aria-pressed="false">动作</button>
+          <button type="button" data-filter="puzzle" aria-pressed="false">益智</button>
+          <button type="button" data-filter="biz" aria-pressed="false">经营</button>
+        </div>
+
         <div class="game-list">
-          <a class="game-card reveal" href="bomber.html">
+          <a class="game-card reveal" href="bomber.html" data-category="action">
             <div class="game-cover">💣</div>
             <div>
               <h3>炸弹人</h3>
@@ -50,7 +65,7 @@
             </div>
             <span class="game-play">开始 →</span>
           </a>
-          <a class="game-card reveal" href="tank.html">
+          <a class="game-card reveal" href="tank.html" data-category="action">
             <div class="game-cover">🛠️</div>
             <div>
               <h3>坦克大战</h3>
@@ -58,7 +73,7 @@
             </div>
             <span class="game-play">开始 →</span>
           </a>
-          <a class="game-card reveal" href="sim.html">
+          <a class="game-card reveal" href="sim.html" data-category="biz">
             <div class="game-cover">🏪</div>
             <div>
               <h3>模拟经营</h3>
@@ -66,7 +81,7 @@
             </div>
             <span class="game-play">开始 →</span>
           </a>
-          <a class="game-card reveal" href="tetris.html">
+          <a class="game-card reveal" href="tetris.html" data-category="puzzle">
             <div class="game-cover">🧱</div>
             <div>
               <h3>俄罗斯方块</h3>
@@ -74,7 +89,7 @@
             </div>
             <span class="game-play">开始 →</span>
           </a>
-          <a class="game-card reveal" href="g2048.html">
+          <a class="game-card reveal" href="g2048.html" data-category="puzzle">
             <div class="game-cover">🔢</div>
             <div>
               <h3>2048</h3>
@@ -82,7 +97,7 @@
             </div>
             <span class="game-play">开始 →</span>
           </a>
-          <a class="game-card reveal" href="memory.html">
+          <a class="game-card reveal" href="memory.html" data-category="puzzle">
             <div class="game-cover">🧠</div>
             <div>
               <h3>记忆翻牌</h3>
