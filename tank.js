@@ -15,8 +15,9 @@
   const scoreEl = document.getElementById('tankScore');
   const livesEl = document.getElementById('tankLives');
   const leftEl = document.getElementById('tankLeft');
+  const powerEl = document.getElementById('tankPower');
 
-  let grid, player, enemies, bullets, effects;
+  let grid, player, enemies, bullets, effects, powerups;
   let level = 1, score = 0, lives = 3, totalEnemies = 0, spawned = 0, killed = 0;
   let state = 'ready', active = false, invuln = 0, last = 0;
   const keys = new Set();
@@ -27,6 +28,7 @@
     scoreEl.textContent = score;
     livesEl.textContent = lives;
     leftEl.textContent = Math.max(0, totalEnemies - killed);
+    if (powerEl) powerEl.textContent = player ? player.power : 1;
   }
   function buildMap() {
     grid = Array.from({ length: ROWS }, (_, y) => Array.from({ length: COLS }, (_, x) => {
@@ -41,12 +43,12 @@
     [[8, 18], [10, 18], [9, 17], [8, 17], [10, 17]].forEach(p => { grid[p[1]][p[0]] = BRICK; });
   }
   function makeTank(x, y, dir, enemy) {
-    return { x, y, fx: x, fy: y, tx: x, ty: y, t: 1, moving: false, dir, enemy, cd: 0, step: enemy ? 210 : 135 };
+    return { x, y, fx: x, fy: y, tx: x, ty: y, t: 1, moving: false, dir, enemy, cd: 0, power: 1, step: enemy ? 210 : 135 };
   }
   function resetLevel() {
     buildMap();
     player = makeTank(2, 18, 0, false);
-    enemies = []; bullets = []; effects = [];
+    enemies = []; bullets = []; effects = []; powerups = [];
     totalEnemies = 5 + level * 2; spawned = 0; killed = 0; invuln = 1500;
     state = 'playing'; overlay.classList.remove('show'); updateHud();
   }
@@ -63,23 +65,36 @@
   }
   function fire(tank) {
     if (tank.cd > 0) return;
+    if (!tank.enemy && bullets.filter(b => !b.enemy).length >= (tank.power >= 3 ? 2 : 1)) return;
     const d = DIRS[tank.dir];
     const px = (tank.x + 0.5) * T, py = (tank.y + 0.5) * T;
-    bullets.push({ x: px + d[0] * 13, y: py + d[1] * 13, dx: d[0], dy: d[1], enemy: !!tank.enemy });
-    tank.cd = tank.enemy ? 1200 : 330;
+    const speed = tank.enemy ? 0.36 : [0, 0.36, 0.5, 0.62][tank.power] || 0.36;
+    bullets.push({
+      x: px + d[0] * 13, y: py + d[1] * 13,
+      dx: d[0], dy: d[1], speed, power: tank.power || 1, enemy: !!tank.enemy
+    });
+    tank.cd = tank.enemy ? 1200 : ([0, 330, 260, 200][tank.power] || 330);
   }
-  function boom(x, y) { effects.push({ x, y, t: 0 }); }
+  function boom(x, y) { effects.push({ x, y, t: 0, life: 400 }); }
+  function popText(x, y, text) { effects.push({ x, y, t: 0, life: 900, text }); }
+  function dropStar(x, y) {
+    powerups.push({ x, y, vy: 0.022, t: 0, life: 9000 });
+  }
 
   function hitTank(tank) {
     if (tank === player) {
       if (invuln > 0) return;
-      lives--; updateHud(); boom((player.x + 0.5) * T, (player.y + 0.5) * T);
-      if (lives <= 0) { end(false); return; }
+      lives--; boom((player.x + 0.5) * T, (player.y + 0.5) * T);
+      if (lives <= 0) { updateHud(); end(false); return; }
       player = makeTank(2, 18, 0, false); invuln = 1500;
+      updateHud();
     } else {
-      killed++; score += 100; updateHud();
-      boom((tank.x + 0.5) * T, (tank.y + 0.5) * T);
+      killed++; score += 100;
+      const sx = (tank.x + 0.5) * T, sy = (tank.y + 0.5) * T;
+      boom(sx, sy);
+      if (Math.random() < 0.45) dropStar(sx, sy);
       enemies = enemies.filter(e => e !== tank);
+      updateHud();
       if (killed >= totalEnemies) end(true);
     }
   }
@@ -128,11 +143,11 @@
     }
     // 子弹
     bullets = bullets.filter(b => {
-      b.x += b.dx * 0.36 * dt; b.y += b.dy * 0.36 * dt;
+      b.x += b.dx * b.speed * dt; b.y += b.dy * b.speed * dt;
       if (b.x < 0 || b.y < 0 || b.x > COLS * T || b.y > ROWS * T) return false;
       const tx = Math.floor(b.x / T), ty = Math.floor(b.y / T);
       if (grid[ty] && grid[ty][tx] !== undefined && grid[ty][tx] !== EMPTY) {
-        if (grid[ty][tx] === BRICK) grid[ty][tx] = EMPTY;
+        if (grid[ty][tx] === BRICK || (grid[ty][tx] === STEEL && b.power >= 3)) grid[ty][tx] = EMPTY;
         if (grid[ty][tx] === BASE) { boom(b.x, b.y); end(false); }
         return false;
       }
@@ -151,22 +166,62 @@
         Math.abs((e.y + 0.5) * T - (player.y + 0.5) * T) < 18);
       if (hit) hitTank(player);
     }
+    // ⭐ 掉落物：缓慢下落，落地后等待玩家拾取
+    powerups.forEach(p => {
+      p.t += dt; p.life -= dt;
+      if (p.vy > 0) {
+        p.y += p.vy * dt;
+        if (p.y >= ROWS * T - 10) { p.y = ROWS * T - 10; p.vy = 0; }
+        else {
+          const below = Math.floor((p.y + 8) / T);
+          const col = Math.floor(p.x / T);
+          if (grid[below] && grid[below][col] !== undefined && grid[below][col] !== EMPTY) {
+            p.y = below * T - 9; p.vy = 0;
+          }
+        }
+      }
+      if (p.life > 0 && invuln <= 0 &&
+          Math.abs(p.x - (player.x + 0.5) * T) < 13 &&
+          Math.abs(p.y - (player.y + 0.5) * T) < 13) {
+        p.life = 0;
+        const old = player.power;
+        player.power = Math.min(3, player.power + 1);
+        player.step = [0, 135, 118, 100][player.power] || 135;
+        score += 200; updateHud();
+        if (player.power > old) popText(p.x, p.y - 6, '升级!');
+      }
+    });
+    powerups = powerups.filter(p => p.life > 0);
     effects.forEach(f => f.t += dt);
-    effects = effects.filter(f => f.t < 400);
+    effects = effects.filter(f => f.t < f.life);
   }
 
+  function drawStar(x, y, r) {
+    ctx.beginPath();
+    for (let i = 0; i < 10; i++) {
+      const a = -Math.PI / 2 + i * Math.PI / 5;
+      const rr = i % 2 ? r * 0.45 : r;
+      const px = x + Math.cos(a) * rr, py = y + Math.sin(a) * rr;
+      i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+    }
+    ctx.closePath(); ctx.fill();
+  }
   function drawTank(t) {
     const x = (t.x + (t.tx - t.x) * t.t + 0.5) * T;
     const y = (t.y + (t.ty - t.y) * t.t + 0.5) * T;
     const c = t.enemy ? '#ef4444' : '#4ade80';
     ctx.save(); ctx.translate(x, y);
-    ctx.rotate(t.dir * Math.PI / 2 - Math.PI / 2);
+    ctx.rotate(t.dir * Math.PI / 2);
     ctx.fillStyle = c;
     ctx.fillRect(-9, -10, 18, 20);
     ctx.fillStyle = t.enemy ? '#7f1d1d' : '#14532d';
     ctx.fillRect(-11, -8, 3, 16); ctx.fillRect(8, -8, 3, 16);
     ctx.fillStyle = '#0f172a'; ctx.fillRect(-2, -14, 4, 9);
     ctx.fillStyle = 'rgba(255,255,255,.35)'; ctx.fillRect(-4, -5, 8, 3);
+    if (!t.enemy && t.power > 1) {
+      ctx.fillStyle = '#fde047';
+      for (let i = 0; i < t.power - 1; i++) ctx.fillRect(-6 + i * 5, 2, 3, 5);
+    }
     ctx.restore();
   }
   function draw() {
@@ -190,10 +245,25 @@
     if (!player) return;
     if (invuln <= 0 || Math.floor(invuln / 130) % 2 === 0) drawTank(player);
     enemies.forEach(drawTank);
+    powerups.forEach(p => {
+      if (p.life < 2000 && Math.floor(p.t / 160) % 2 === 0) return;
+      ctx.save();
+      ctx.shadowColor = '#fde047'; ctx.shadowBlur = 12;
+      ctx.fillStyle = '#fde047'; drawStar(p.x, p.y + Math.sin(p.t / 180) * 1.5, 9);
+      ctx.restore();
+    });
     ctx.fillStyle = '#fde047';
     bullets.forEach(b => ctx.fillRect(b.x - 3, b.y - 3, 6, 6));
     effects.forEach(f => {
-      const a = 1 - f.t / 400;
+      const a = Math.max(0, 1 - f.t / f.life);
+      if (f.text) {
+        ctx.save();
+        ctx.globalAlpha = a;
+        ctx.fillStyle = '#fde047'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText(f.text, f.x, f.y - f.t / 55);
+        ctx.restore();
+        return;
+      }
       ctx.fillStyle = `rgba(255,${Math.round(120 + 100 * a)},40,${a})`;
       ctx.beginPath(); ctx.arc(f.x, f.y, 6 + 12 * (1 - a), 0, Math.PI * 2); ctx.fill();
     });
@@ -253,5 +323,5 @@
       if (!active) clearDirs();
     }, { threshold: 0.1 }).observe(canvas);
   } else active = true;
-  buildMap(); totalEnemies = 7; updateHud(); requestAnimationFrame(loop);
+  buildMap(); powerups = []; totalEnemies = 7; updateHud(); requestAnimationFrame(loop);
 })();

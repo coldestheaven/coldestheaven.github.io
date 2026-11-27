@@ -44,14 +44,14 @@
             <span>关卡 <b id="tankLevel">1</b></span>
             <span>得分 <b id="tankScore">0</b></span>
             <span>生命 <b id="tankLives">3</b></span>
-            <span>敌军 <b id="tankLeft">7</b></span>
+            <span>敌军 <b id="tankLeft">7</b> · 火力 <b id="tankPower">1</b></span>
             <button type="button" class="game-fs-btn">⛶ 全屏游玩</button>
           </div>
           <div class="game-stage">
             <canvas id="tankCanvas" width="480" height="480" tabindex="0" aria-label="坦克大战游戏画面"></canvas>
             <div class="game-overlay show" id="tankOverlay">
               <strong id="tankOverlayTitle">坦克大战</strong>
-              <span id="tankOverlayText">WASD / 方向键移动，空格发射炮弹；手机拖动摇杆驾驶、点 🔫 开炮。砖墙可炸开，钢墙打不穿。</span>
+              <span id="tankOverlayText">WASD / 方向键移动，空格发射炮弹；手机拖动摇杆驾驶、点 🔫 开炮。击毁敌军有机会掉落 ⭐，捡到可升级火力（最高 3 级，3 级能打穿钢墙）。</span>
               <button class="btn btn-primary" id="tankOverlayBtn">开始游戏</button>
             </div>
           </div>
@@ -62,7 +62,7 @@
             </div>
             <button type="button" class="bomb-btn" id="tankFire">🔫 开炮</button>
           </div>
-          <p class="game-help">方向键 / WASD 移动 · 空格开炮 · 手机拖动摇杆驾驶、点开炮按钮</p>
+          <p class="game-help">方向键 / WASD 移动 · 空格开炮 · 捡 ⭐ 升级火力 · 手机拖动摇杆驾驶、点开炮按钮</p>
           <a class="game-back" href="index.html">← 返回游戏列表</a>
         </div>
       </div>
